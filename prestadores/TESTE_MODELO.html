@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamentos do Prestador</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            background: #f3f4f6;
+            color: #333;
+        }
+
+        header {
+            background: #004d61;
+            padding: 25px;
+            text-align: center;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .card {
+            background: white;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 900px;
+        }
+
+        .info-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #004d61;
+        }
+
+        .info-value {
+            font-size: 17px;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            background: #004d61;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px;
+            background: #ffffff;
+            border-bottom: 1px solid #dcdcdc;
+        }
+
+        tr:nth-child(even) td {
+            background: #f1f1f1;
+        }
+
+        .status-ok {
+            color: #0a7e07;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        TREINAMENTOS DO PRESTADOR
+    </header>
+
+    <div class="card">
+        <div class="info-title">Nome:</div>
+        <div class="info-value">ALEX BARBARA</div>
+
+        <div class="info-title">Cargo:</div>
+        <div class="info-value">Técnico Mecânico II</div>
+
+        <div class="info-title">Situação:</div>
+        <div class="info-value">Ativo</div>
+    </div>
+
+    <div class="card">
+        <div class="info-title">Treinamentos NO PRAZO</div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Treinamento</th>
+                    <th>Treinado em</th>
+                    <th>Vence em</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>NR18 Plataforma Elevatória</td>
+                    <td>27/05/2023</td>
+                    <td>16/05/2025</td>
+                    <td class="status-ok">NO PRAZO</td>
+                </tr>
+
+                <tr>
+                    <td>NR06 EPI</td>
+                    <td>14/02/2024</td>
+                    <td>14/02/2025</td>
+                    <td class="status-ok">NO PRAZO</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
