@@ -1,11 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Site de Teste - Treinamentos</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Treinamentos • Piumhi</title>
+  <link rel="stylesheet" href="./assets/main.css" />
 </head>
 <body>
-    <h1>Site de Teste Funcionando!</h1>
-    <p>Se você está vendo isso, então o GitHub Pages está ativo.</p>
+  <header class="header">
+    <h1>Treinamentos • Piumhi</h1>
+    <p class="subtitle">Integrações, NRs e materiais para prestadores e associados</p>
+  </header>
+
+  <main class="container">
+    <section>
+      <h2>Atalhos</h2>
+      <div class="cards">
+        <a class="card" href="./prestadores/TESTE_MODELO.html">
+          <h3>Prestadores • Modelo</h3>
+          <p>Exemplo de página de treinamento/documentação de terceiros</p>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Buscar conteúdos</h2>
+      <input id="q" class="search" type="search" placeholder="Digite para filtrar… (ex.: LOTO, NR-23, integração)" />
+      <ul id="list" class="list">
+        <li data-tags="prestadores terceiros documentação integração">Prestadores • Modelo — <a href="./prestadores/TESTE_MODELO.html">abrir</a></li>
+        <!-- Ex.: adicione outras páginas aqui no futuro -->
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <small>© JDE • Piumhi • SHE</small>
+  </footer>
+
+  <script>
+    // filtro simples na lista de links
+    const input = document.getElementById('q');
+    const list = document.getElementById('list');
+    input.addEventListener('input', () => {
+      const term = input.value.toLowerCase();
+      [...list.children].forEach(li => {
+        const text = li.textContent.toLowerCase();
+        const tags = (li.getAttribute('data-tags') || '').toLowerCase();
+        li.style.display = (text.includes(term) || tags.includes(term)) ? '' : 'none';
+      });
+    });
+  </script>
 </body>
 </html>
