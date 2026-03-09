@@ -1,1 +1,316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Treinamentos • Colaborador</title>
+<style>
+  :root{
+    --bg:#F3EBDD;        /* bege claro */
+    --card:#ffffff;
+    --brand:#463328;     /* marrom principal */
+    --brand-2:#3A2920;   /* marrom escuro */
+    --accent:#B56A4C;    /* terracota */
+    --muted:#6B7280;
+    --line:#E6DED1;
+    --ok:#0A7E07;
+    --warn:#B45309;
+    --danger:#B91C1C;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:#2c2c2c;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  }
+  header{
+    background:linear-gradient(135deg,var(--brand),var(--brand-2));
+    color:#fff; padding:26px 18px;
+  }
+  .wrap{max-width:1100px;margin:0 auto}
+  header .title{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  header h1{margin:0;font-size:26px;letter-spacing:.4px}
+  .back{
+    display:inline-flex;gap:8px;align-items:center;
+    background:#ffffff12;border:1px solid #ffffff30;color:#fff;
+    padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:700
+  }
+  .back:hover{background:#ffffff1f}
+  .cards{display:grid;gap:16px;margin:16px 0 26px 0; grid-template-columns:1fr 1fr}
+  @media (max-width:900px){ .cards{grid-template-columns:1fr} }
 
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:16px;box-shadow:0 6px 14px rgba(0,0,0,.06);
+  }
+
+  .info-grid{
+    display:grid;gap:10px; grid-template-columns:repeat(4,1fr)
+  }
+  @media (max-width:900px){ .info-grid{grid-template-columns:1fr 1fr} }
+  .info .label{font-size:12px;color:var(--muted);margin-bottom:2px}
+  .info .value{font-weight:800}
+
+  h2.sec{margin:8px 0 6px 0;font-size:18px;color:#2e2a27}
+  .pill{
+    display:inline-flex;gap:8px;align-items:center;
+    padding:5px 9px;border-radius:999px;font-size:12px;margin-left:8px;
+    border:1px solid var(--line);background:#F6EFE5;color:#3f3b37;
+  }
+
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  thead th{
+    text-align:left;background:var(--brand);color:#fff;padding:9px;border-top-left-radius:8px;border-top-right-radius:8px
+  }
+  tbody td{
+    padding:10px;background:#fff;border-bottom:1px solid var(--line);font-size:14px
+  }
+  tbody tr:nth-child(even) td{ background:#FAF6EE }
+  .badge{
+    display:inline-block;padding:5px 8px;border-radius:999px;font-weight:800;font-size:12px
+  }
+  .ok{ background:#E6F6E6; color:var(--ok); border:1px solid #b9e3ba }
+  .venc{ background:#FEE2E2; color:var(--danger); border:1px solid #FECACA }
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:10px 14px;border-radius:10px;border:1px solid transparent;
+    font-weight:800;font-size:14px;letter-spacing:.2px;cursor:pointer;
+    text-decoration:none;user-select:none;
+    transition: transform .05s ease, filter .15s ease, box-shadow .15s ease;
+  }
+  .btn:active{ transform: translateY(1px) }
+  .btn-primary{
+    background: var(--accent);
+    border-color: var(--accent);
+    color:#fff;
+    box-shadow: 0 3px 0 var(--brand-2);
+  }
+  .btn-outline{
+    background:#fff;border-color:var(--brand);color:var(--brand);
+  }
+  .btn-outline:hover{ background:#FFF8F2; border-color:var(--brand-2); color:var(--brand-2) }
+
+  .qrwrap{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .qrbox{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px}
+  .muted{color:var(--muted);font-size:13px}
+  .links a{display:inline-block;margin:6px 8px 0 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="title">
+      <h1>Treinamentos • Colaborador</h1>
+      ./../index.htmlVoltar à lista</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- Cabeçalho com dados do colaborador -->
+  <section class="card info">
+    <div class="info-grid">
+      <div>
+        <div class="label">Nome</div>
+        <div class="value" id="nome">—</div>
+      </div>
+      <div>
+        <div class="label">Cargo</div>
+        <div class="value" id="cargo">—</div>
+      </div>
+      <div>
+        <div class="label">Área</div>
+        <div class="value" id="area">—</div>
+      </div>
+      <div>
+        <div class="label">Coordenador</div>
+        <div class="value" id="coord">—</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cards">
+    <!-- Treinamentos -->
+    <section class="card">
+      <h2 class="sec">Treinamentos <span class="pill" id="contResumo">—</span></h2>
+      <div id="treinos"></div>
+    </section>
+
+    <!-- Materiais & Certificados + QR -->
+    <section class="card">
+      <h2 class="sec">Materiais & Certificados</h2>
+      <div class="links" id="materiais">
+        <p class="muted">Links de certificados e listas de presença (exibir apenas se existirem).</p>
+      </div>
+      <hr style="border:none;border-top:1px solid var(--line);margin:14px 0" />
+      <h2 class="sec">QR Code da página</h2>
+      <div class="qrwrap">
+        <div id="qrcode" class="qrbox"></div>
+        <div class="muted">
+          Escaneie para abrir esta página em qualquer dispositivo.<br/>
+          URL: <span id="url"></span>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <button class="btn btn-outline" id="btBaixarQR">Baixar QR Code (PNG)</button>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- QRCode lib (CDN leve) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-TdNf7a9cMkYf0bLzC0c1l5k0a8tE/4wq0F0v7p2bU3Wc7Zb7bJ0uQvLw2w1L4a2p1GQqS8+6J6Q9ZfV6GfJQ5w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+/* ===========================================================
+   DADOS DE EXEMPLO (protótipo)
+   Depois, o Power Automate vai substituir window.TREINAMENTOS_DO_COLAB
+   por dados reais consolidados do Excel (todas as abas).
+   -----------------------------------------------------------
+   Esquema esperado por registro:
+   {
+     origem, fornecedor, instrutor,
+     treinamento, nome, cargo, treinado_em, validade_dias,
+     status, vence_em, rga_hoje, condicao, situacao,
+     categoria   (ex.: "NR10", "NR35", "NR33", "CCC", "BOS"…),
+     link_certificado (opcional), link_lista (opcional)
+   }
+   =========================================================== */
+window.TREINAMENTOS_DO_COLAB = {
+  colaborador: {
+    nome: "ALEX SANDRO ALVES TEIXEIRA",
+    cargo: "OPERADOR INDUSTRIAL II",
+    area:  "Qualidade",
+    coordenador: "GRACIELA BIRRER",
+    situacao: "ATIVO"
+  },
+  itens: [
+    { treinamento:"NR 10 SEP", categoria:"NR10", instrutor:"FULANO", treinado_em:"03/05/2024", vence_em:"03/05/2026", status:"NO PRAZO", link_certificado:"", link_lista:"" },
+    { treinamento:"NR 35 TRABALHO EM ALTURA", categoria:"NR35", instrutor:"SICLANO", treinado_em:"20/06/2023", vence_em:"20/06/2025", status:"VENCIDO", link_certificado:"", link_lista:"" },
+    { treinamento:"NR 33 ESPAÇO CONFINADO", categoria:"NR33", instrutor:"INSTRUTOR X", treinado_em:"15/02/2024", vence_em:"15/02/2026", status:"NO PRAZO" },
+    { treinamento:"CCC", categoria:"CCC", instrutor:"—", treinado_em:"10/01/2024", vence_em:"10/01/2025", status:"VENCIDO" },
+    { treinamento:"BOS", categoria:"BOS", instrutor:"—", treinado_em:"12/03/2024", vence_em:"12/03/2026", status:"NO PRAZO" },
+    { treinamento:"NR 23 BRIGADA", categoria:"NR23", instrutor:"—", treinado_em:"10/07/2023", vence_em:"10/07/2025", status:"VENCIDO" },
+    // Exemplos que NÃO devem aparecer (serão filtrados):
+    { treinamento:"NR 12", categoria:"NR12", status:"HISTÓRICO" },
+    { treinamento:"PPRO-PENEIRAS", categoria:"PPRO-PENEIRAS", status:"N.A." }
+  ],
+  materiais: [
+    { nome:"Certificado NR10 (PDF)", url:"#"},
+    { nome:"Lista de Presença NR33 (PDF)", url:"#"}
+  ]
+};
+
+// Helper: slug (mesmo usado na home)
+const slug = s => (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+  .replace(/[^\w\s-]/g,"").trim().replace(/\s+/g,"_").toUpperCase();
+
+// 1) Preenche cabeçalho
+const C = window.TREINAMENTOS_DO_COLAB || {colaborador:{},itens:[],materiais:[]};
+document.getElementById("nome").textContent  = C.colaborador.nome || "—";
+document.getElementById("cargo").textContent = C.colaborador.cargo || "—";
+document.getElementById("area").textContent  = C.colaborador.area  || "—";
+document.getElementById("coord").textContent = C.colaborador.coordenador || "—";
+
+// 2) Filtra somente NO PRAZO e VENCIDO
+const validos = (C.itens || []).filter(it => ["NO PRAZO","VENCIDO"].includes((it.status||"").toUpperCase()));
+
+// 3) Agrupa por categoria
+const grupos = {};
+validos.forEach(it=>{
+  const cat = (it.categoria || inferCat(it.treinamento) || "OUTROS").toUpperCase();
+  if(!grupos[cat]) grupos[cat] = [];
+  grupos[cat].push(it);
+});
+
+// Inferência simples de categoria, se não vier no dado
+function inferCat(txt){
+  const s = (txt||"").toUpperCase();
+  const m = s.match(/NR\s*\d+|NR\d+|NR-\d+/);
+  if(m) return m[0].replace(/\s+/g,"");
+  if(s.includes("CCC")) return "CCC";
+  if(s.includes("BOS")) return "BOS";
+  return "OUTROS";
+}
+
+// 4) Renderiza seções por categoria
+const container = document.getElementById("treinos");
+const cats = Object.keys(grupos).sort((a,b)=>a.localeCompare(b,'pt-BR',{numeric:true}));
+let total = 0;
+
+cats.forEach(cat=>{
+  const table = document.createElement("div");
+  table.innerHTML = `
+    <h3 style="margin:12px 0 6px 0">${cat}</h3>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:36%">Treinamento</th>
+          <th style="width:16%">Instrutor</th>
+          <th style="width:16%">Treinado em</th>
+          <th style="width:16%">Vence em</th>
+          <th style="width:16%">Status</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  `;
+  const tbody = table.querySelector("tbody");
+
+  grupos[cat].forEach(it=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${it.treinamento || "-"}</td>
+      <td>${it.instrutor || "-"}</td>
+      <td>${it.treinado_em || "-"}</td>
+      <td>${it.vence_em || "-"}</td>
+      <td>${renderStatus(it.status)}</td>
+    `;
+    tbody.appendChild(tr);
+    total++;
+  });
+
+  container.appendChild(table);
+});
+
+document.getElementById("contResumo").textContent = `${total} registro(s)`;
+
+// 5) Materiais & Certificados (exibir se houver)
+const matEl = document.getElementById("materiais");
+matEl.innerHTML = "";
+(C.materiais||[]).forEach(m=>{
+  const a = document.createElement("a");
+  a.href = m.url; a.textContent = m.nome; a.className = "btn btn-outline";
+  a.target="_blank"; a.rel="noopener";
+  matEl.appendChild(a);
+});
+if(!(C.materiais||[]).length){
+  matEl.innerHTML = '<span class="muted">Nenhum material disponível.</span>';
+}
+
+// 6) QRCode da própria página
+const urlAtual = window.location.href;
+document.getElementById("url").textContent = urlAtual;
+const qr = new QRCode(document.getElementById("qrcode"), {
+  text: urlAtual, width: 148, height: 148, correctLevel: QRCode.CorrectLevel.M
+});
+
+// Baixar o QR
+document.getElementById("btBaixarQR").addEventListener("click", ()=>{
+  const img = document.querySelector("#qrcode img");
+  if(!img) return;
+  const link = document.createElement("a");
+  link.href = img.src;
+  link.download = `QR_${slug(C.colaborador.nome||"COLABORADOR")}.png`;
+  link.click();
+});
+
+function renderStatus(s){
+  const up = (s||"").toUpperCase();
+  if(up === "NO PRAZO") return `<span class="badge ok">NO PRAZO</span>`;
+  if(up === "VENCIDO")  return `<span class="badge venc">VENCIDO</span>`;
+  return `<span class="badge">${s||"-"}</span>`;
+}
+</script>
+</body>
+</html>
