@@ -265,3 +265,21 @@ document.getElementById("url").textContent = urlAtual;
 const qr = new QRCode(document.getElementById("qrcode"), {
   text: urlAtual, width: 148, height: 148, correctLevel: QRCode.CorrectLevel.M
 });
+document.getElementById("btBaixarQR").addEventListener("click", ()=>{
+  const img = document.querySelector("#qrcode img");
+  if(!img) return;
+  const link = document.createElement("a");
+  link.href = img.src;
+  link.download = `QR_${(C.colaborador.nome||"COLABORADOR").replace(/\s+/g,"_")}.png`;
+  link.click();
+});
+
+function renderStatus(s){
+  const up = (s||"").toUpperCase();
+  if(up === "NO PRAZO") return `<span class="badge ok">NO PRAZO</span>`;
+  if(up === "VENCIDO")  return `<span class="badge venc">VENCIDO</span>`;
+  return `<span class="badge">${s||"-"}</span>`;
+}
+</script>
+</body>
+</html>
