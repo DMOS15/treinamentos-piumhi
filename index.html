@@ -77,13 +77,28 @@
       background:#fff;color:#3f3b37;
   }
   .go{
-      margin-top:8px;padding:10px;border-radius:10px;border:1px solid var(--brand);
-      color:var(--brand);font-weight:800;background:#fff;cursor:pointer;text-align:center;
-      text-decoration:none; transition:.15s;
-      display:inline-block;
-  }
-  .go:hover{ background:#FFF8F2; border-color:var(--brand-2); color:var(--brand-2) }
-
+  margin-top: 10px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--accent);      /* terracota */
+  background: var(--accent);            /* terracota sólido */
+  color: #fff;                          /* texto branco */
+  font-weight: 800;
+  letter-spacing: .2px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform .05s ease, filter .15s ease, box-shadow .15s ease;
+  box-shadow: 0 3px 0 var(--brand-2);   /* “degrau” marrom escuro */
+}
+.go:hover{
+  filter: brightness(.97);
+}
+.go:active{
+  transform: translateY(1px);           /* “clique” */
+  box-shadow: 0 2px 0 var(--brand-2);
+}
   .count{font-size:13px;color:#5e5b58;margin:6px 0 12px 2px}
   footer{color:#7d736a;text-align:center;font-size:12px;margin:24px 0}
 
