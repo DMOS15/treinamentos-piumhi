@@ -105,6 +105,10 @@
   @media (max-width:720px){
       .filters-row{grid-template-columns:1fr 1fr}
       .filters-row .full{grid-column:1/-1}
+    /* Utilitários para o QR da Home */
+.qrwrap{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.qrbox{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px}
+.muted{color:var(--muted);font-size:13px}
   }
 </style>
 </head>
@@ -138,7 +142,20 @@
     </div>
     <div class="count" id="count"></div>
   </section>
-
+  <!-- QR da página inicial (cartaz) -->
+<section class="card" style="margin-top:16px">
+  <h2 style="margin:8px 0 10px 0;font-size:18px;color:#2e2a27">QR Code da página inicial</h2>
+  <div class="qrwrap">
+    <div id="qrHome" class="qrbox"></div>
+    <div class="muted">
+      Escaneie para abrir esta página em qualquer dispositivo.<br/>
+      URL: <span id="urlHome"></span>
+      <div style="margin-top:10px">
+        <button id="btBaixarQRHome" class="btn" style="background:#B56A4C;color:#fff;border:1px solid #B56A4C;font-weight:800;border-radius:10px;padding:10px 14px;box-shadow:0 3px 0 #3A2920">Baixar QR da Home (PNG)</button>
+      </div>
+    </div>
+  </div>
+</section>
   <section class="cards" id="cards"></section>
   <footer>Versão protótipo. Depois esta lista virá automática do Excel/SharePoint via Power Automate.</footer>
 </main>
