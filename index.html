@@ -1,54 +1,211 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Treinamentos • Piumhi</title>
-  <link rel="stylesheet" href="./assets/main.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Colaboradores | Treinamentos</title>
+<style>
+    :root{
+        --bg:#f3f5f7;
+        --card:#ffffff;
+        --brand:#004d61;
+        --brand-2:#007a8c;
+        --muted:#6b7280;
+        --line:#e5e7eb;
+        --ok:#0a7e07;
+        --warn:#b45309;
+    }
+    *{box-sizing:border-box}
+    body{
+        margin:0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        background:var(--bg);
+        color:#111827;
+    }
+    header{
+        background:linear-gradient(135deg,var(--brand),var(--brand-2));
+        color:#fff;
+        padding:28px 20px;
+    }
+    .wrap{max-width:1100px;margin:0 auto}
+    header h1{margin:0;font-size:28px;letter-spacing:.5px}
+    header p{margin:6px 0 0 0;opacity:.9}
+
+    .filters{
+        background:var(--card);
+        border-radius:14px;
+        box-shadow:0 8px 20px rgba(0,0,0,.08);
+        padding:16px;
+        margin-top:-18px;
+        border:1px solid var(--line);
+    }
+    .filters-row{
+        display:grid;
+        grid-template-columns:1.5fr 1fr 1fr 140px;
+        gap:12px;
+    }
+    .filters label{font-size:12px;color:var(--muted);display:block;margin-bottom:6px}
+    .filters input[type="text"], .filters select{
+        width:100%;padding:10px 12px;border:1px solid var(--line);
+        border-radius:10px;background:#fff;font-size:14px;
+        outline:none;
+    }
+    .filters button{
+        border:none;background:var(--brand);color:#fff;border-radius:10px;
+        font-weight:600;font-size:14px;cursor:pointer;
+    }
+    .filters button:hover{filter:brightness(.95)}
+
+    .cards{
+        display:grid;gap:14px;margin:18px 0 26px 0;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    .card{
+        background:var(--card);border:1px solid var(--line);
+        border-radius:14px;padding:16px;box-shadow:0 6px 14px rgba(0,0,0,.06);
+        display:flex;flex-direction:column;gap:8px;
+    }
+    .name{font-weight:700;font-size:16px}
+    .meta{font-size:13px;color:var(--muted)}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+    .tag{
+        font-size:11.5px;border:1px solid var(--line);padding:5px 8px;border-radius:999px;
+        background:#fff;color:#374151;
+    }
+    .go{
+        margin-top:8px;padding:10px;border-radius:10px;border:1px solid var(--brand);
+        color:var(--brand);font-weight:700;background:#fff;cursor:pointer;text-align:center;
+        text-decoration:none;
+    }
+    .go:hover{background:#f0fdfd}
+    .count{font-size:13px;color:var(--muted);margin:6px 0 12px 2px}
+    footer{color:var(--muted);text-align:center;font-size:12px;margin:24px 0}
+    @media (max-width:720px){
+        .filters-row{grid-template-columns:1fr 1fr}
+        .filters-row .full{grid-column:1/-1}
+    }
+</style>
 </head>
 <body>
-  <header class="header">
-    <h1>Treinamentos • Piumhi</h1>
-    <p class="subtitle">Integrações, NRs e materiais para prestadores e associados</p>
-  </header>
+<header>
+  <div class="wrap">
+    <h1>Treinamentos | Colaboradores Ativos</h1>
+    <p>Liste e filtre por Área, Coordenador ou Nome. Clique para ver os treinamentos do colaborador.</p>
+  </div>
+</header>
 
-  <main class="container">
-    <section>
-      <h2>Atalhos</h2>
-      <div class="cards">
-        <a class="card" href="./prestadores/TESTE_MODELO.html">
-          <h3>Prestadores • Modelo</h3>
-          <p>Exemplo de página de treinamento/documentação de terceiros</p>
-        </a>
+<main class="wrap">
+  <section class="filters">
+    <div class="filters-row">
+      <div class="full">
+        <label>Buscar por nome</label>
+        <input id="fNome" type="text" placeholder="Digite o nome do colaborador…" />
       </div>
-    </section>
+      <div>
+        <label>Área</label>
+        <select id="fArea"><option value="">Todas</option></select>
+      </div>
+      <div>
+        <label>Coordenador</label>
+        <select id="fCoord"><option value="">Todos</option></select>
+      </div>
+      <div style="display:flex;gap:8px;align-items:end">
+        <button id="btFiltrar">Filtrar</button>
+        <button id="btLimpar" style="background:#6b7280">Limpar</button>
+      </div>
+    </div>
+    <div class="count" id="count"></div>
+  </section>
 
-    <section>
-      <h2>Buscar conteúdos</h2>
-      <input id="q" class="search" type="search" placeholder="Digite para filtrar… (ex.: LOTO, NR-23, integração)" />
-      <ul id="list" class="list">
-        <li data-tags="prestadores terceiros documentação integração">Prestadores • Modelo — <a href="./prestadores/TESTE_MODELO.html">abrir</a></li>
-        <!-- Ex.: adicione outras páginas aqui no futuro -->
-      </ul>
-    </section>
-  </main>
+  <section class="cards" id="cards"></section>
+  <footer>Versão protótipo. Depois esta lista virá automática do Excel/SharePoint via Power Automate.</footer>
+</main>
 
-  <footer class="footer">
-    <small>© JDE • Piumhi • SHE</small>
-  </footer>
+<script>
+/* ===========================================================
+   1) DADOS: Nesta versão protótipo usamos um exemplo local.
+      Depois o Power Automate irá injetar window.COLAB_JSON
+      com os ATIVOS da aba CADASTRO (Nome, Cargo, Área, Coord.).
+   =========================================================== */
+const SAMPLE = [
+  { nome:"ALEX BARBARA", cargo:"Técnico Mecânico II", area:"Manutenção", coordenador:"THIAGO FERREIRA", situacao:"ATIVO" },
+  { nome:"ANA JULIA FARIA REZENDE", cargo:"Estagiário", area:"ADM", coordenador:"THAIS SONEGO PALMA", situacao:"ATIVO" },
+  { nome:"JOÃO PAULO FIORINTI GOLOVADZ", cargo:"Operador Industrial II", area:"Fábrica", coordenador:"ELIEZER SILVA", situacao:"DESLIGADO" },
+  { nome:"WALLACE JOSÉ SILVA PEREIRA", cargo:"Técnico Eletrônico II", area:"Manutenção ADM", coordenador:"ELIEZER SILVA", situacao:"ATIVO" },
+  { nome:"ALEX SANDRO ALVES TEIXEIRA", cargo:"Operador Industrial II", area:"Qualidade", coordenador:"GRACIELA BIRRER", situacao:"ATIVO" }
+];
+// Se o Power Automate injetar dados reais, usaremos eles:
+const DATA = (window.COLAB_JSON && Array.isArray(window.COLAB_JSON) ? window.COLAB_JSON : SAMPLE)
+             .filter(x => (x.situacao || "").toUpperCase() === "ATIVO");
 
-  <script>
-    // filtro simples na lista de links
-    const input = document.getElementById('q');
-    const list = document.getElementById('list');
-    input.addEventListener('input', () => {
-      const term = input.value.toLowerCase();
-      [...list.children].forEach(li => {
-        const text = li.textContent.toLowerCase();
-        const tags = (li.getAttribute('data-tags') || '').toLowerCase();
-        li.style.display = (text.includes(term) || tags.includes(term)) ? '' : 'none';
-      });
-    });
-  </script>
+/* ===========================================================
+   2) UTILS
+   =========================================================== */
+const el = sel => document.querySelector(sel);
+const slug = s => (s||"")
+  .normalize("NFD").replace(/[\u0300-\u036f]/g,"") // remove acentos
+  .replace(/[^\w\s-]/g,"") // tira especiais
+  .trim().replace(/\s+/g,"_") // espaços -> _
+  .toUpperCase();
+
+/* ===========================================================
+   3) POPULA FILTROS (área e coordenador)
+   =========================================================== */
+const areas = [...new Set(DATA.map(x => x.area).filter(Boolean))].sort();
+const coords = [...new Set(DATA.map(x => x.coordenador).filter(Boolean))].sort();
+
+areas.forEach(a => { const o=document.createElement("option"); o.value=a; o.textContent=a; el("#fArea").appendChild(o); });
+coords.forEach(c => { const o=document.createElement("option"); o.value=c; o.textContent=c; el("#fCoord").appendChild(o); });
+
+/* ===========================================================
+   4) RENDERIZA OS CARDS
+   =========================================================== */
+function render(lista){
+  const wrap = el("#cards");
+  wrap.innerHTML = "";
+  lista.forEach(x=>{
+    const url = `./colaboradores/${slug(x.nome)}.html`;
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="name">${x.nome}</div>
+      <div class="meta">${x.cargo || ""}</div>
+      <div class="tags">
+        <span class="tag">Área: ${x.area || "-"}</span>
+        <span class="tag">Coord.: ${x.coordenador || "-"}</span>
+        <span class="tag" style="border-color:#c7eed0;color:var(--ok);">ATIVO</span>
+      </div>
+      <a class="go" href="${url}">Ver treinamentos</a>
+    `;
+    wrap.appendChild(card);
+  });
+  el("#count").textContent = `${lista.length} colaborador(es) encontrado(s)`;
+}
+
+/* ===========================================================
+   5) APLICA FILTROS
+   =========================================================== */
+function filtrar(){
+  const nome = (el("#fNome").value || "").trim().toUpperCase();
+  const area = el("#fArea").value;
+  const coord = el("#fCoord").value;
+
+  const out = DATA.filter(x=>{
+    const okNome = !nome || x.nome.toUpperCase().includes(nome);
+    const okArea = !area || x.area === area;
+    const okCoord = !coord || x.coordenador === coord;
+    return okNome && okArea && okCoord;
+  });
+  render(out);
+}
+el("#btFiltrar").addEventListener("click", filtrar);
+el("#btLimpar").addEventListener("click", ()=>{
+  el("#fNome").value=""; el("#fArea").value=""; el("#fCoord").value=""; filtrar();
+});
+el("#fNome").addEventListener("keyup", (e)=>{ if(e.key==="Enter") filtrar(); });
+
+/* start */
+render(DATA);
+</script>
 </body>
 </html>
