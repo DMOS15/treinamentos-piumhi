@@ -246,5 +246,33 @@ el("#fNome").addEventListener("keyup", (e)=>{ if(e.key==="Enter") filtrar(); });
 /* start */
 render(DATA);
 </script>
+  <!-- QRCode lib (CDN leve) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-M/s0nqGzYg1pV9B8f3mAq7fLNsYwQpe9lM90QHh5iGm2j3vQfRkA8v7HnFQ3pEXPV5Jw3ppYh82s6Rwp8EtyBQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+  // Gera o QR da Home e botão de download
+  (function(){
+    // URL “limpa” da home (sem query/hash)
+    const homeUrl = window.location.origin + window.location.pathname.replace(/index\.html?$/i, '');
+    document.getElementById('urlHome').textContent = homeUrl;
+
+    const qr = new QRCode(document.getElementById('qrHome'), {
+      text: homeUrl,
+      width: 148,
+      height: 148,
+      correctLevel: QRCode.CorrectLevel.M
+    });
+
+    document.getElementById('btBaixarQRHome').addEventListener('click', ()=>{
+      const img = document.querySelector('#qrHome img');
+      if(!img) return;
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = 'QR_HOME.png';
+      a.click();
+    });
+  })();
+</script>
+``
 </body>
 </html>
