@@ -50,8 +50,9 @@
   .info .value{font-weight:800}
 
   h2.sec{margin:8px 0 10px 0;font-size:18px;color:#2e2a27}
+  .muted{color:var(--muted);font-size:13px}
 
-  /* Tabela responsiva (mobile-first) */
+  /* Tabelas responsivas (mobile-first) */
   .table-wrap{overflow:auto}
   table{width:100%;border-collapse:collapse}
   thead th{
@@ -84,29 +85,8 @@
   .ok{ background:#E6F6E6; color:var(--ok); border:1px solid #b9e3ba }
   .venc{ background:#FEE2E2; color:var(--danger); border:1px solid #FECACA }
 
-  .btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    padding:10px 14px;border-radius:10px;border:1px solid transparent;
-    font-weight:800;font-size:14px;letter-spacing:.2px;cursor:pointer;
-    text-decoration:none;user-select:none;
-    transition: transform .05s ease, filter .15s ease, box-shadow .15s ease;
-  }
-  .btn:active{ transform: translateY(1px) }
-  .btn-primary{
-    background: var(--accent);
-    border-color: var(--accent);
-    color:#fff;
-    box-shadow: 0 3px 0 var(--brand-2);
-  }
-  .btn-outline{
-    background:#fff;border-color:var(--brand);color:var(--brand);
-  }
-  .btn-outline:hover{ background:#FFF8F2; border-color:var(--brand-2); color:var(--brand-2) }
-
   .qrwrap{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .qrbox{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px}
-  .muted{color:var(--muted);font-size:13px}
-  .links a{display:inline-block;margin:6px 8px 0 0}
 </style>
 </head>
 <body>
@@ -142,12 +122,11 @@
     </div>
   </section>
 
-  <!-- Tabela única de treinamentos -->
+  <!-- Tabela: Normativos (todas as NRs exceto EPI) -->
   <section class="card">
-    <h2 class="sec">Treinamentos <span class="muted" id="contResumo">—</span></h2>
-
+    <h2 class="sec">Treinamentos Normativos (NR) <span class="muted" id="cntNorm">—</span></h2>
     <div class="table-wrap">
-      <table id="tab">
+      <table id="tabNorm">
         <thead>
           <tr>
             <th style="width:36%">Treinamento</th>
@@ -162,13 +141,27 @@
     </div>
   </section>
 
-  <!-- Materiais & Certificados + QR -->
+  <!-- Tabela: Obrigatórios (Segurança) -->
   <section class="card">
-    <h2 class="sec">Materiais & Certificados</h2>
-    <div class="links" id="materiais">
-      <p class="muted">Links de certificados e listas de presença (exibir apenas se existirem).</p>
+    <h2 class="sec">Treinamentos Obrigatórios (Segurança) <span class="muted" id="cntObr">—</span></h2>
+    <div class="table-wrap">
+      <table id="tabObr">
+        <thead>
+          <tr>
+            <th style="width:36%">Treinamento</th>
+            <th style="width:16%">Instrutor</th>
+            <th style="width:16%">Treinado em</th>
+            <th style="width:16%">Vence em</th>
+            <th style="width:16%">Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
-    <hr style="border:none;border-top:1px solid var(--line);margin:14px 0" />
+  </section>
+
+  <!-- QR Code -->
+  <section class="card">
     <h2 class="sec">QR Code da página</h2>
     <div class="qrwrap">
       <div id="qrcode" class="qrbox"></div>
@@ -177,14 +170,11 @@
         URL: <span id="url"></span>
       </div>
     </div>
-    <div style="margin-top:14px">
-      <button class="btn btn-outline" id="btBaixarQR">Baixar QR Code (PNG)</button>
-    </div>
   </section>
 </main>
 
-<!-- QRCode lib (CDN leve) -->
-https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js</script>
+<!-- QRCode lib -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
 /* ===========================================================
@@ -203,75 +193,113 @@ window.TREINAMENTOS_DO_COLAB = {
   itens: [
     { treinamento:"NR 10", instrutor:"FULANO", treinado_em:"03/05/2024", vence_em:"03/05/2026", status:"NO PRAZO" },
     { treinamento:"NR 10 SEP", instrutor:"FULANO", treinado_em:"03/05/2024", vence_em:"03/05/2026", status:"NO PRAZO" },
-    { treinamento:"NR 35 TRABALHO EM ALTURA", instrutor:"SICLANO", treinado_em:"20/06/2023", vence_em:"20/06/2025", status:"VENCIDO" },
     { treinamento:"NR 33 ESPAÇO CONFINADO", instrutor:"INSTRUTOR X", treinado_em:"15/02/2024", vence_em:"15/02/2026", status:"NO PRAZO" },
+    { treinamento:"NR 23 BRIGADA", instrutor:"—", treinado_em:"10/07/2023", vence_em:"10/07/2025", status:"VENCIDO" },
+    { treinamento:"NR 06 EPI", instrutor:"—", treinado_em:"01/09/2024", vence_em:"01/09/2025", status:"NO PRAZO" },  // EPI vai para Obrigatórios
     { treinamento:"CCC", instrutor:"—", treinado_em:"10/01/2024", vence_em:"10/01/2025", status:"VENCIDO" },
     { treinamento:"BOS", instrutor:"—", treinado_em:"12/03/2024", vence_em:"12/03/2026", status:"NO PRAZO" },
-    // Exemplos que NÃO devem aparecer (serão filtrados):
-    { treinamento:"NR 12", status:"HISTÓRICO" },
-    { treinamento:"PPRO-PENEIRAS", status:"N.A." }
-  ],
-  materiais: [
-    { nome:"Certificado NR10 (PDF)", url:"#"},
-    { nome:"Lista de Presença NR33 (PDF)", url:"#"}
+    // NÃO deve aparecer:
+    { treinamento:"BPM", instrutor:"—", status:"NO PRAZO" },  // Qualidade → ignorar
+    { treinamento:"APPCC", instrutor:"—", status:"VENCIDO" }, // Qualidade → ignorar
+    { treinamento:"PPRO-PENEIRAS", instrutor:"—", status:"NO PRAZO" }, // Qualidade → ignorar
+    { treinamento:"NR 12", instrutor:"—", status:"HISTÓRICO" } // status inválido → ignorar
   ]
 };
 
-const C = window.TREINAMENTOS_DO_COLAB || {colaborador:{},itens:[],materiais:[]};
+const C = window.TREINAMENTOS_DO_COLAB || {colaborador:{},itens:[]};
 document.getElementById("nome").textContent  = C.colaborador.nome || "—";
 document.getElementById("cargo").textContent = C.colaborador.cargo || "—";
 document.getElementById("area").textContent  = C.colaborador.area  || "—";
 document.getElementById("coord").textContent = C.colaborador.coordenador || "—";
 
-// Filtrar somente NO PRAZO e VENCIDO
-const validos = (C.itens||[]).filter(it => ["NO PRAZO","VENCIDO"].includes((it.status||"").toUpperCase()));
+/* ------------ Regras de classificação -------------
+   - Normativos: qualquer "NR xx" EXCETO EPI (NR06 EPI/EPI)
+   - Obrigatórios (Segurança): EPI e segurança não-NR (CCC, BOS, LOTO/LOTOTO, PT, PAE, USO DE ESCADAS, APR, LAIA, GESTAO DE RESÍDUOS, REPORTE INCIDENTES, MANUSEIO PROD. QUIM., etc.)
+   - Excluir Qualidade: BPM/BPF/APPCC(HACCP)/PPRO/ISO/QUALIDADE/FSSC etc.
+---------------------------------------------------- */
+const OBR_KEYWORDS = [
+  "EPI","NR06 EPI","CCC","BOS","LOTO","LOTOTO","PT","PAE","USO DE ESCADAS","ESCADAS",
+  "APR","ANÁLISE PRELIMINAR DE RISCO","LAIA","GESTAO DE RESIDUOS","GESTÃO DE RESÍDUOS",
+  "REPORTE INCIDENTES","REPORTE DE INCIDENTES","MANUSEIO PROD. QUIM","MANUSEIO PROD. QUIM.",
+  "SPDA","PERIGO","SEGURANÇA COMPORTAMENTAL"
+].map(s=>s.toUpperCase());
 
-// Render tabela única
-const tbody = document.querySelector("#tab tbody");
-tbody.innerHTML = "";
-let total = 0;
+const QUALI_KEYWORDS = [
+  "BPM","BPF","APPCC","HACCP","PPRO","QUALIDADE","ISO","FSSC","AUDITOR","INSPEÇÃO","CONTROLE DE QUALIDADE"
+].map(s=>s.toUpperCase());
 
-validos.forEach(it=>{
-  const tr = document.createElement("tr");
-  tr.innerHTML = `
-    <td data-label="Treinamento">${it.treinamento || "-"}</td>
-    <td data-label="Instrutor">${it.instrutor || "-"}</td>
-    <td data-label="Treinado em">${it.treinado_em || "-"}</td>
-    <td data-label="Vence em">${it.vence_em || "-"}</td>
-    <td data-label="Status">${renderStatus(it.status)}</td>
-  `;
-  tbody.appendChild(tr);
-  total++;
-});
-
-document.getElementById("contResumo").textContent = `${total} registro(s)`;
-
-// Materiais & Certificados (se houver)
-const matEl = document.getElementById("materiais");
-matEl.innerHTML = "";
-(C.materiais||[]).forEach(m=>{
-  const a = document.createElement("a");
-  a.href = m.url; a.textContent = m.nome; a.className = "btn btn-outline";
-  a.target="_blank"; a.rel="noopener";
-  matEl.appendChild(a);
-});
-if(!(C.materiais||[]).length){
-  matEl.innerHTML = '<span class="muted">Nenhum material disponível.</span>';
+function isNR(t){
+  const s = (t||"").toUpperCase();
+  return /(^|\s)NR[\s-]*\d+/.test(s);
 }
+function hasAny(s, arr){
+  const up = (s||"").toUpperCase();
+  return arr.some(k => up.includes(k));
+}
+function classifica(treinamento){
+  const t = (treinamento || "").toUpperCase();
+  if(hasAny(t, QUALI_KEYWORDS)) return "IGNORAR";
+  if(isNR(t) && !t.includes("EPI")) return "NORM";
+  if(hasAny(t, OBR_KEYWORDS)) return "OBR";
+  return "IGNORAR"; // qualquer outro por enquanto fica fora
+}
+
+// Somente status válidos
+const validStatus = it => ["NO PRAZO","VENCIDO"].includes((it.status||"").toUpperCase());
+
+// Ordenação por vencimento (mais próximo primeiro, quando houver data)
+function parseBR(d){
+  if(!d || typeof d !== "string") return null;
+  const m = d.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if(!m) return null;
+  return new Date(+m[3], +m[2]-1, +m[1]); // yyyy, mm-1, dd
+}
+
+function sortByVenc(a,b){
+  const da = parseBR(a.vence_em), db = parseBR(b.vence_em);
+  if(da && db) return da - db;
+  if(da && !db) return -1;
+  if(!da && db) return 1;
+  return (a.treinamento||"").localeCompare(b.treinamento||"",'pt-BR',{numeric:true});
+}
+
+// Separa normativos x obrigatórios
+const itensValidos = (C.itens||[]).filter(validStatus);
+const norm = itensValidos.filter(i => classifica(i.treinamento) === "NORM").sort(sortByVenc);
+const obr  = itensValidos.filter(i => classifica(i.treinamento) === "OBR").sort(sortByVenc);
+
+// Render
+function renderTable(id, dados){
+  const tb = document.querySelector(`#${id} tbody`);
+  tb.innerHTML = "";
+  if(!dados.length){
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td data-label="Treinamento" colspan="5" style="text-align:center;color:#6B7280">Nenhum registro para exibir.</td>`;
+    tb.appendChild(tr);
+    return;
+  }
+  dados.forEach(it=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td data-label="Treinamento">${it.treinamento || "-"}</td>
+      <td data-label="Instrutor">${it.instrutor || "-"}</td>
+      <td data-label="Treinado em">${it.treinado_em || "-"}</td>
+      <td data-label="Vence em">${it.vence_em || "-"}</td>
+      <td data-label="Status">${renderStatus(it.status)}</td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+renderTable("tabNorm", norm);
+renderTable("tabObr", obr);
+document.getElementById("cntNorm").textContent = `${norm.length} registro(s)`;
+document.getElementById("cntObr").textContent  = `${obr.length} registro(s)`;
 
 // QRCode
 const urlAtual = window.location.href;
 document.getElementById("url").textContent = urlAtual;
-const qr = new QRCode(document.getElementById("qrcode"), {
+new QRCode(document.getElementById("qrcode"), {
   text: urlAtual, width: 148, height: 148, correctLevel: QRCode.CorrectLevel.M
-});
-document.getElementById("btBaixarQR").addEventListener("click", ()=>{
-  const img = document.querySelector("#qrcode img");
-  if(!img) return;
-  const link = document.createElement("a");
-  link.href = img.src;
-  link.download = `QR_${(C.colaborador.nome||"COLABORADOR").replace(/\s+/g,"_")}.png`;
-  link.click();
 });
 
 function renderStatus(s){
