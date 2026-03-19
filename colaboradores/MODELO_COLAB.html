@@ -207,7 +207,16 @@ window.TREINAMENTOS_DO_COLAB = {
 };
 
 const C = window.TREINAMENTOS_DO_COLAB || {colaborador:{},itens:[]};
-document.getElementById("nome").textContent  = C.colaborador.nome || "—";
+function nomePrimeiroUltimo(nomeCompleto) {
+  if (!nomeCompleto) return "—";
+  const partes = nomeCompleto.trim().split(/\s+/).filter(Boolean);
+  if (partes.length === 1) return partes[0].toUpperCase();
+  const primeiro = partes[0];
+  const ultimo   = partes[partes.length - 1];
+  return `${primeiro} ${ultimo}`.toUpperCase();
+}
+
+document.getElementById("nome").textContent  = nomePrimeiroUltimo(C.colaborador.nome);
 document.getElementById("cargo").textContent = C.colaborador.cargo || "—";
 document.getElementById("area").textContent  = C.colaborador.area  || "—";
 document.getElementById("coord").textContent = C.colaborador.coordenador || "—";
