@@ -202,22 +202,54 @@ coords.forEach(c => { const o=document.createElement("option"); o.value=c; o.tex
 /* ===========================================================
    4) RENDERIZA OS CARDS
    =========================================================== */
+const el = sel => document.querySelector(sel);
+
+function nomePrimeiroUltimo(nomeCompleto) {
+  if (!nomeCompleto) return "";
+  const partes = nomeCompleto
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (partes.length === 1) return partes[0].toUpperCase();
+  const primeiro = partes[0];
+  const ultimo   = partes[partes.length - 1];
+  return `${primeiro} ${ultimo}`.toUpperCase();
+}
+
+function slugArquivoPrimeiroUltimo(nomeCompleto) {
+  if (!nomeCompleto) return "";
+  const partes = nomeCompleto
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  const primeiro = (partes[0] || "");
+  const ultimo   = (partes[partes.length - 1] || "");
+  const base = `${primeiro}_${ultimo}`;
+  return base
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"") // tira acentos
+    .replace(/[^\w\s-]/g,"")
+    .replace(/\s+/g,"_")
+    .toUpperCase();
+}
+
 function render(lista){
   const wrap = el("#cards");
   wrap.innerHTML = "";
   lista.forEach(x=>{
-    const url = `./colaboradores/${slug(x.nome)}.html`;
+    const nomeExibicao = nomePrimeiroUltimo(x.nome);
+    const arquivo = slugArquivoPrimeiroUltimo(x.nome);
+    const url = `./colaboradores/${arquivo}.html`;
     const card = document.createElement("article");
     card.className = "card";
     card.innerHTML = `
-      <div class="name">${x.nome}</div>
+      <div class="name">${nomeExibicao}</div>
       <div class="meta">${x.cargo || ""}</div>
       <div class="tags">
         <span class="tag">Área: ${x.area || "-"}</span>
         <span class="tag">Coord.: ${x.coordenador || "-"}</span>
-        <span class="tag" style="border-color:#c7eed0;color:var(--ok);">ATIVO</span>
+        <span class="tag" style="border-color:#c7b6a7;color:#2e2a27;background:#F6EFE5;">ATIVO</span>
       </div>
-      <a class="go" href="${url}">Ver treinamentos</a>
+      ${url}Ver treinamentos</a>
     `;
     wrap.appendChild(card);
   });
